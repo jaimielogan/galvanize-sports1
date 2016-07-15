@@ -7,7 +7,6 @@ module.exports = {
     shoppingCart: data.shoppingCart,
     addItem: function(itemId, quantity){
         // Your code here!
-
         for(var index in inventory){
           if (inventory[index].id === itemId){
             if(quantity > inventory[index].quantityAvailable){
@@ -24,25 +23,37 @@ module.exports = {
     removeItem: function(itemId, quantity){
         // Your code here!
         for (var i in shoppingCart){
-          if(shoppingCart[i].quantity < quantity){
-            
+          if(shoppingCart[i].itemId === itemId){
+            if(shoppingCart[i].quantity > quantity){
+              shoppingCart[i].quantity -= quantity;
+              inventory[i].quantityAvailable += quantity;
+              }
+          else if (shoppingCart[i].quantity <= quantity) {
+            inventory[i].quantityAvailable += shoppingCart[i].quantity;
+            shoppingCart[i].quantity = 0;
           }
         }
+      }
     },
     getCheckoutSubtotal: function(){
         var checkoutSubtotal = 0.00;
         // Your code here!
-        return checkoutSubtotal;
+        for (var j in shoppingCart){
+          checkoutSubtotal += (shoppingCart[j].quantity * inventory[j].price);
+        }
+        return checkoutSubtotal.toFixed(2);
     },
     getTax: function(subtotal, rate){
         var tax = 0.00;
         // Your code here!
-        return tax;
+        tax = subtotal * rate;
+        return tax.toFixed(2);
     },
-    getCheckoutTotal: function(){
+    getCheckoutTotal: function(getTax,getCheckoutSubtotal){
         var TAX_RATE = 0.078;
         var checkoutTotal = 0.00;
         // Your code here!
+        checkoutTotal = getTax(getCheckoutSubtotal(),TAX_RATE)+getCheckoutSubtotal();
         return checkoutTotal;
     }
 };

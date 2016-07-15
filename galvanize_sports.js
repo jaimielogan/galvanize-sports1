@@ -7,9 +7,27 @@ module.exports = {
     shoppingCart: data.shoppingCart,
     addItem: function(itemId, quantity){
         // Your code here!
+
+        for(var index in inventory){
+          if (inventory[index].id === itemId){
+            if(quantity > inventory[index].quantityAvailable){
+              shoppingCart[index].quantity += inventory[index].quantityAvailable;
+              inventory[index].quantityAvailable = 0;
+            }
+            else {
+            inventory[index].quantityAvailable -= quantity;
+            shoppingCart[index].quantity += quantity;
+            }
+          }
+        }
     },
     removeItem: function(itemId, quantity){
         // Your code here!
+        for (var i in shoppingCart){
+          if(shoppingCart[i].quantity < quantity){
+            
+          }
+        }
     },
     getCheckoutSubtotal: function(){
         var checkoutSubtotal = 0.00;
@@ -27,4 +45,4 @@ module.exports = {
         // Your code here!
         return checkoutTotal;
     }
-}
+};
